@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "1/uc7thHEp+FmDKqvzEP6NhXJi82jrSvq6u7izL0U21/8r+GDBz30xxo7gab78z6nzMzv81vgatDrh51FxyndA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\u\\source\\Commercial_Repositories\\Proxified\\Proxified.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\u\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\u\\.nuget\\packages\\selenium.webdriver\\4.1.0\\selenium.webdriver.4.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}
