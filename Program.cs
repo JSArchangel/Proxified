@@ -12,16 +12,16 @@ namespace Proxified
 
             // DRIVE VARIABLES
             string[] driveArray = new string[20];
-            string driveNames = null;
-            string selectedDrive = null;
+            string driveNames = String.Empty;
+            string selectedDrive = String.Empty;
             int driveIndex = 0;
             bool isDriveValid = false;
 
             // PROXY VARIABLES
-            string ipAddress = null;
-            string portAddress = null;
-            string country = null;
-            string proxyType = null;
+            string ipAddress = String.Empty;
+            string portAddress = String.Empty;
+            string country = String.Empty;
+            string proxyType = String.Empty;
             int proxyPing = 0;
 
             // IO PERMISSIONS
