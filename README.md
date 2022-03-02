@@ -3,7 +3,6 @@
 ☉ Programming Language: C# <br>
 ☉ Framework: .NET Core 6.0 Console Application <br>
 ☉ Operating System: Cross Platform <br>
-☉ Database System: MSSQL <br>
 
 <i>Proxified is a proxy-list creator that scrapes proxy data from the web.</i>
 
