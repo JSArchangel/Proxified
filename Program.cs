@@ -11,7 +11,7 @@ namespace Proxified
             Console.Title = "Proxified";
 
             // DRIVE VARIABLES
-            string[] driveArray = new string[20];
+            string[] driveArray = new string[50];
             string driveNames = String.Empty;
             string selectedDrive = String.Empty;
             int driveIndex = 0;
@@ -23,6 +23,7 @@ namespace Proxified
             string country = String.Empty;
             string proxyType = String.Empty;
             int proxyPing = 0;
+            int totalProxy = 0;
 
             // IO PERMISSIONS
             bool isPingGood = false;
@@ -35,8 +36,7 @@ namespace Proxified
             int pageIndex = 64;
 
             // PROXY-DATA-ARRAY
-            string[] proxyDataArray = new string[10000];
-            int proxyDataArrayIndex = 0;
+            List<string> proxyDataArray = new List<string>();
 
             // SYSTEM CONFIGURATION VARIABLES
             int systemSpeed = 0;
@@ -107,7 +107,7 @@ namespace Proxified
             }
 
             // TAKES THE SPEED FROM THE USER
-            Console.Write("Enter Scraping Speed (Preferred: 2000) --> ");
+            Console.Write("Scraping Speed (Preferred: 2000) --> ");
             systemSpeed = Convert.ToInt32(Console.ReadLine());
 
             // LINE SPACE
@@ -116,6 +116,14 @@ namespace Proxified
             // TAKES THE SCRAPE PAGE SITE
             Console.Write("How Many Pages Do You Want To Scrape --> ");
             scrapePage = Convert.ToInt32(Console.ReadLine());
+
+            // LINE SPACE
+            Space();
+
+            // WRITES SYSTEM START LOG
+            Console.WriteLine("|###################|");
+            Console.WriteLine("| Operation Started |");
+            Console.WriteLine("|###################|");
 
             // LINE SPACE
             Space();
@@ -143,6 +151,7 @@ namespace Proxified
             firefoxOptions.AddArgument("--disable-ipv6");
             firefoxOptions.AddArgument("--allow-http-screen-capture");
             firefoxOptions.AddArgument("--start-maximized");
+            firefoxOptions.AddArgument("--headless");
 
             // FIREFOX DRIVER
             FirefoxDriver firefoxDriver = new FirefoxDriver(firefoxDriverService, firefoxOptions);
@@ -156,6 +165,9 @@ namespace Proxified
             // ENTERS THE SYSTEM
             for (int i = 0; i < scrapePage; i++)
             {
+                // WRITES THE PROXY PROCESS LOG
+                Console.WriteLine("- 64 Proxy Processed");
+
                 // 64 TIMES CHECK & WRITE SYSTEM FOR EVERY PAGE
                 for (int pI = 1; pI <= 64; pI++)
                 {
@@ -229,8 +241,8 @@ namespace Proxified
                         // ADDS THE DATA TO ARRAY
                         if (isPingGood && isProxyHTTP && isCountryValid && isIPAddressValid && isPortValid)
                         {
-                            proxyDataArray[proxyDataArrayIndex] = $"{ipAddress}#{portAddress}#{country}";
-                            proxyDataArrayIndex++;
+                            proxyDataArray.Add($"{ipAddress}#{portAddress}#{country}");
+                            totalProxy++;
                         }
                     }
                     catch (Exception ex)
@@ -246,10 +258,11 @@ namespace Proxified
                     }
                 }
 
-                // WRITES ALL THE LINES AFTER READING & PROCESSING 64 LINES OF PROXY
+                // WRITES ALL THE LINES AFTER READING & PROCESSING PROXIES
                 if (i == scrapePage - 1)
                 {
                     File.WriteAllLines(filePath, proxyDataArray);
+                    firefoxDriver.Dispose();
                     break;
                 }
 
@@ -260,6 +273,24 @@ namespace Proxified
                 // WAITS FOR THE NEW WEBPAGE
                 Thread.Sleep(systemSpeed);
             }
+
+            // LINE SPACE
+            Space();
+
+            // WRITES TOTAL GATHERED PROXY
+            Console.WriteLine($"Gathered Proxy --> {totalProxy} Out Of {pageIndex}");
+
+            // LINE SPACE
+            Space();
+
+            // SYSTEM FINISHED LOG
+            Console.WriteLine("|####################|");
+            Console.WriteLine("| Operation Finished |");
+            Console.WriteLine("|####################|");
+
+            // WAITS AND CLOSES THE SYSTEM
+            Thread.Sleep(4000);
+            Environment.Exit(0);
 
             // WAITS FOR THE SYSTEM CLOSE BY CLIENT
             Console.ReadLine();
