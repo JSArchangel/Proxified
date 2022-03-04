@@ -24,6 +24,7 @@ namespace Proxified
             string proxyType = String.Empty;
             int proxyPing = 0;
             int totalProxy = 0;
+            int totalPage = 0;
 
             // IO PERMISSIONS
             bool isPingGood = false;
@@ -41,6 +42,59 @@ namespace Proxified
             // SYSTEM CONFIGURATION VARIABLES
             int systemSpeed = 0;
             int scrapePage = 0;
+
+            // FIREFOX DRIVER SERVICE
+            FirefoxDriverService firefoxDriverService = FirefoxDriverService.CreateDefaultService();
+            firefoxDriverService.HideCommandPromptWindow = true;
+
+            // FIREFOX OPTIONS
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            firefoxOptions.AddArgument("--silent-launch");
+            firefoxOptions.AddArgument("--disable-dev-shm-usage");
+            firefoxOptions.AddArgument("--no-sandbox");
+            firefoxOptions.AddArgument("--disable-impl-side-painting");
+            firefoxOptions.AddArgument("--disable-setuid-sandbox");
+            firefoxOptions.AddArgument("--disable-seccomp-filter-sandbox");
+            firefoxOptions.AddArgument("--disable-breakpad");
+            firefoxOptions.AddArgument("--disable-client-side-phishing-detection");
+            firefoxOptions.AddArgument("--disable-cast");
+            firefoxOptions.AddArgument("--disable-cast-streaming-hw-encoding");
+            firefoxOptions.AddArgument("--disable-cloud-import");
+            firefoxOptions.AddArgument("--disable-popup-blocking");
+            firefoxOptions.AddArgument("--ignore-certificate-errors");
+            firefoxOptions.AddArgument("--disable-session-crashed-bubble");
+            firefoxOptions.AddArgument("--disable-ipv6");
+            firefoxOptions.AddArgument("--allow-http-screen-capture");
+            firefoxOptions.AddArgument("--start-maximized");
+            firefoxOptions.AddArgument("--headless");
+
+            // SYSTEM START LOG
+            Console.WriteLine("|----------------|");
+            Console.WriteLine("| System Started |");
+            Console.WriteLine("|----------------|");
+
+            // LINE SPACE
+            Space();
+
+            // INFORMATION LOG
+            Console.WriteLine("|-------------|");
+            Console.WriteLine("| Please Wait |");
+            Console.WriteLine("|-------------|");
+
+            // LINE SPACE
+            Space();
+
+            // FIREFOX DRIVER
+            FirefoxDriver firefoxDriver = new FirefoxDriver(firefoxDriverService, firefoxOptions);
+
+            // OPEN THE PROXY-SCRAPING WEBSITE
+            firefoxDriver.Navigate().GoToUrl("https://hidemy.name/en/proxy-list/#list");
+
+            // CHEKS THE MAX PAGE
+            totalPage = Convert.ToInt32(firefoxDriver.FindElement(By.XPath("/html/body/div[1]/div[4]/div/div[5]/ul/li[9]/a")).Text);
+
+            // CLEARS THE LOGS 
+            Console.Clear();
 
             // LOGO OF PROGRAM
             Console.WriteLine(@"|###########################################|");
@@ -113,12 +167,16 @@ namespace Proxified
             // LINE SPACE
             Space();
 
-            // TAKES THE SCRAPE PAGE SITE
-            Console.Write("How Many Pages Do You Want To Scrape --> ");
-            scrapePage = Convert.ToInt32(Console.ReadLine());
+            // SETS THE SCRAPE PAGE QUANTITY
+            do
+            {
+                // TAKES THE SCRAPE PAGE QUANTITY
+                Console.Write($"How Many Pages Do You Want To Scrape (MAX: {totalPage}) --> ");
+                scrapePage = Convert.ToInt32(Console.ReadLine());
 
-            // LINE SPACE
-            Space();
+                // LINE SPACE
+                Space();
+            } while (scrapePage >= totalPage);
 
             // WRITES SYSTEM START LOG
             Console.WriteLine("|###################|");
@@ -127,40 +185,6 @@ namespace Proxified
 
             // LINE SPACE
             Space();
-
-            // FIREFOX DRIVER SERVICE
-            FirefoxDriverService firefoxDriverService = FirefoxDriverService.CreateDefaultService();
-            firefoxDriverService.HideCommandPromptWindow = true;
-
-            // FIREFOX OPTIONS
-            FirefoxOptions firefoxOptions = new FirefoxOptions();
-            firefoxOptions.AddArgument("--silent-launch");
-            firefoxOptions.AddArgument("--disable-dev-shm-usage");
-            firefoxOptions.AddArgument("--no-sandbox");
-            firefoxOptions.AddArgument("--disable-impl-side-painting");
-            firefoxOptions.AddArgument("--disable-setuid-sandbox");
-            firefoxOptions.AddArgument("--disable-seccomp-filter-sandbox");
-            firefoxOptions.AddArgument("--disable-breakpad");
-            firefoxOptions.AddArgument("--disable-client-side-phishing-detection");
-            firefoxOptions.AddArgument("--disable-cast");
-            firefoxOptions.AddArgument("--disable-cast-streaming-hw-encoding");
-            firefoxOptions.AddArgument("--disable-cloud-import");
-            firefoxOptions.AddArgument("--disable-popup-blocking");
-            firefoxOptions.AddArgument("--ignore-certificate-errors");
-            firefoxOptions.AddArgument("--disable-session-crashed-bubble");
-            firefoxOptions.AddArgument("--disable-ipv6");
-            firefoxOptions.AddArgument("--allow-http-screen-capture");
-            firefoxOptions.AddArgument("--start-maximized");
-            firefoxOptions.AddArgument("--headless");
-
-            // FIREFOX DRIVER
-            FirefoxDriver firefoxDriver = new FirefoxDriver(firefoxDriverService, firefoxOptions);
-
-            // OPEN THE PROXY-SCRAPING WEBSITE
-            firefoxDriver.Navigate().GoToUrl("https://hidemy.name/en/proxy-list/#list");
-
-            // WAITS FOR THE WEBSITE
-            Thread.Sleep(systemSpeed);
 
             // ENTERS THE SYSTEM
             for (int i = 0; i < scrapePage; i++)
