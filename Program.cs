@@ -245,14 +245,8 @@ namespace Proxified
                             totalProxy++;
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        // WRITES THE ERROR MESSAGE
-                        Console.WriteLine(ex.Message);
-
-                        // LINE SPACE
-                        Space();
-
                         // CONTINUES TO THE LOOP
                         continue;
                     }
