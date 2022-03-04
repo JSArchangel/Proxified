@@ -68,34 +68,6 @@ namespace Proxified
             firefoxOptions.AddArgument("--start-maximized");
             firefoxOptions.AddArgument("--headless");
 
-            // SYSTEM START LOG
-            Console.WriteLine("|----------------|");
-            Console.WriteLine("| System Started |");
-            Console.WriteLine("|----------------|");
-
-            // LINE SPACE
-            Space();
-
-            // INFORMATION LOG
-            Console.WriteLine("|-------------|");
-            Console.WriteLine("| Please Wait |");
-            Console.WriteLine("|-------------|");
-
-            // LINE SPACE
-            Space();
-
-            // FIREFOX DRIVER
-            FirefoxDriver firefoxDriver = new FirefoxDriver(firefoxDriverService, firefoxOptions);
-
-            // OPEN THE PROXY-SCRAPING WEBSITE
-            firefoxDriver.Navigate().GoToUrl("https://hidemy.name/en/proxy-list/#list");
-
-            // CHEKS THE MAX PAGE
-            totalPage = Convert.ToInt32(firefoxDriver.FindElement(By.XPath("/html/body/div[1]/div[4]/div/div[5]/ul/li[9]/a")).Text);
-
-            // CLEARS THE LOGS 
-            Console.Clear();
-
             // LOGO OF PROGRAM
             Console.WriteLine(@"|###########################################|");
             Console.WriteLine(@"|    __   __   __         ___    ___  __    |");
@@ -103,6 +75,48 @@ namespace Proxified
             Console.WriteLine(@"|   |    |  \ \__/ / \ | |    | |___ |__/   |");
             Console.WriteLine(@"|                                           |");
             Console.WriteLine(@"|###########################################|");
+
+            // LINE SPACE
+            Space();
+
+            // INFORMATION LOG
+            Console.WriteLine("|######################################|");
+            Console.WriteLine("| Please Wait For The Proxified Driver |");
+            Console.WriteLine("|######################################|");
+
+            // LINE SPACE
+            Space();
+
+            // FIREFOX DRIVER
+            FirefoxDriver firefoxDriver = new FirefoxDriver(firefoxDriverService, firefoxOptions);
+
+            // INFORMATION LOG
+            Console.WriteLine("|###########################|");
+            Console.WriteLine("| Proxified Driver Executed |");
+            Console.WriteLine("|###########################|");
+
+            // LINE SPACE
+            Space();
+
+            // OPEN THE PROXY-SCRAPING WEBSITE
+            firefoxDriver.Navigate().GoToUrl("https://hidemy.name/en/proxy-list/#list");
+
+            // INFORMATION LOG
+            Console.WriteLine("|#############################|");
+            Console.WriteLine("| Proxified Driver Configured |");
+            Console.WriteLine("|#############################|");
+
+            // LINE SPACE
+            Space();
+
+            // CHEKS THE MAX PAGE
+            totalPage = Convert.ToInt32(firefoxDriver.FindElement(By.XPath("/html/body/div[1]/div[4]/div/div[5]/ul/li[9]/a")).Text);
+
+
+            // INFORMATION LOG
+            Console.WriteLine("|##################################|");
+            Console.WriteLine("| Proxified Driver Service Started |");
+            Console.WriteLine("|##################################|");
 
             // LINE SPACE
             Space();
