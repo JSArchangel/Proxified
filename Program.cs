@@ -65,7 +65,6 @@ namespace Proxified
             firefoxOptions.AddArgument("--disable-session-crashed-bubble");
             firefoxOptions.AddArgument("--disable-ipv6");
             firefoxOptions.AddArgument("--allow-http-screen-capture");
-            firefoxOptions.AddArgument("--start-maximized");
             firefoxOptions.AddArgument("--headless");
 
             // LOGO OF PROGRAM
@@ -111,7 +110,6 @@ namespace Proxified
 
             // CHEKS THE MAX PAGE
             totalPage = Convert.ToInt32(firefoxDriver.FindElement(By.XPath("/html/body/div[1]/div[4]/div/div[5]/ul/li[9]/a")).Text);
-
 
             // INFORMATION LOG
             Console.WriteLine("|##################################|");
