@@ -42,6 +42,7 @@ namespace Proxified
             // SYSTEM CONFIGURATION VARIABLES
             int systemSpeed = 0;
             int scrapePage = 0;
+            bool errorHappened = false;
 
             // FIREFOX DRIVER SERVICE
             FirefoxDriverService firefoxDriverService = FirefoxDriverService.CreateDefaultService();
@@ -187,166 +188,196 @@ namespace Proxified
             catch (Exception ex)
             {
                 // WRITES THE ERROR LOG
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Error: {ex.Message}");
 
                 // LINE SPACE
                 Space();
+
+                // SETS ERROR TRUE
+                errorHappened = true;
             }
 
-            // TAKES THE SPEED FROM THE USER
-            Console.Write("Scraping Speed (Preferred: 2000) --> ");
-            systemSpeed = Convert.ToInt32(Console.ReadLine());
-
-            // LINE SPACE
-            Space();
-
-            // SETS THE SCRAPE PAGE QUANTITY
-            do
+            try
             {
-                // TAKES THE SCRAPE PAGE QUANTITY
-                Console.Write($"How Many Pages Do You Want To Scrape (MAX: {totalPage}) --> ");
-                scrapePage = Convert.ToInt32(Console.ReadLine());
+                // TAKES THE SPEED FROM THE USER
+                Console.Write("Scraping Speed (Preferred: 2000) --> ");
+                systemSpeed = Convert.ToInt32(Console.ReadLine());
 
                 // LINE SPACE
                 Space();
-            } while (scrapePage >= totalPage);
 
-            // WRITES SYSTEM START LOG
-            Console.WriteLine("|######################################|");
-            Console.WriteLine("|           Operation Started          |");
-            Console.WriteLine("|######################################|");
+                // SETS THE SCRAPE PAGE QUANTITY
+                do
+                {
+                    // TAKES THE SCRAPE PAGE QUANTITY
+                    Console.Write($"How Many Pages Do You Want To Scrape (MAX: {totalPage}) --> ");
+                    scrapePage = Convert.ToInt32(Console.ReadLine());
 
-            // LINE SPACE
-            Space();
-
-            // ENTERS THE SYSTEM
-            for (int i = 0; i < scrapePage; i++)
+                    // LINE SPACE
+                    Space();
+                } while (scrapePage >= totalPage);
+            }
+            catch (Exception ex)
             {
-                // WRITES THE PROXY PROCESS LOG
-                Console.WriteLine("- 64 Proxy Processed");
+                // LINE SPACE
+                Space();
 
-                // 64 TIMES CHECK & WRITE SYSTEM FOR EVERY PAGE
-                for (int pI = 1; pI <= 64; pI++)
-                {
-                    try
-                    {
-                        // CHECKSUM FOR PING
-                        proxyPing = Convert.ToInt32(firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[4]/div/p")).Text.Substring(0, firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[4]/div/p")).Text.Length - 3));
+                // WRITES THE ERROR LOG
+                Console.WriteLine($"Error: {ex.Message}");
 
-                        // SET PING WRITE PERMISSIONS
-                        if (proxyPing < 1000)
-                        {
-                            isPingGood = true;
-                        }
-                        else
-                        {
-                            isPingGood = false;
-                        }
+                // LINE SPACE
+                Space();
 
-                        // CHECKSUM FOR TYPE
-                        proxyType = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[5]")).Text;
-
-                        // SET TYPE WRITE PERMISSIONS
-                        if (proxyType.Contains("HTTP"))
-                        {
-                            isProxyHTTP = true;
-                        }
-                        else
-                        {
-                            isProxyHTTP = false;
-                        }
-
-                        // COUNTRY SET
-                        country = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[3]/span[1]")).Text;
-
-                        // SET COUNTRY WRITE PERMISSIONS
-                        if (country != "")
-                        {
-                            isCountryValid = true;
-                        }
-                        else
-                        {
-                            isCountryValid = false;
-                        }
-
-                        // IP ADDRESS SET
-                        ipAddress = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[1]")).Text;
-
-                        // SET IP WRITE PERMISSIONS
-                        if (ipAddress != "")
-                        {
-                            isIPAddressValid = true;
-                        }
-                        else
-                        {
-                            isIPAddressValid = false;
-                        }
-
-                        // PORT ADDRESS SET
-                        portAddress = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[2]")).Text;
-
-                        // SET PORT WRITE PERMISSIONS
-                        if (portAddress != "")
-                        {
-                            isPortValid = true;
-                        }
-                        else
-                        {
-                            isPortValid = false;
-                        }
-
-                        // ADDS THE DATA TO ARRAY
-                        if (isPingGood && isProxyHTTP && isCountryValid && isIPAddressValid && isPortValid)
-                        {
-                            proxyDataArray.Add($"{ipAddress}#{portAddress}#{country}");
-                            totalProxy++;
-                        }
-                    }
-                    catch
-                    {
-                        // CONTINUES TO THE LOOP
-                        continue;
-                    }
-                }
-
-                // WRITES ALL THE LINES AFTER READING & PROCESSING PROXIES
-                if (i == scrapePage - 1)
-                {
-                    // EXCEPTION HANDLING FOR FILE WRITING
-                    try
-                    {
-                        File.WriteAllLines(filePath, proxyDataArray);
-                        firefoxDriver.Dispose();
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        // WRITES THE ERROR LOG
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-
-                // GOES FOR ANOTHER PAGE
-                firefoxDriver.Navigate().GoToUrl($"https://hidemy.name/en/proxy-list/?start={pageIndex}#list");
-                pageIndex = pageIndex + 64;
-
-                // WAITS FOR THE NEW WEBPAGE
-                Thread.Sleep(systemSpeed);
+                // SETS ERROR TRUE
+                errorHappened = true;
             }
 
-            // LINE SPACE
-            Space();
+            if (!errorHappened)
+            {
+                // WRITES SYSTEM START LOG
+                Console.WriteLine("|######################################|");
+                Console.WriteLine("|           Operation Started          |");
+                Console.WriteLine("|######################################|");
 
-            // WRITES TOTAL GATHERED PROXY
-            Console.WriteLine($"Gathered Proxy --> {totalProxy} Out Of {pageIndex}");
+                // LINE SPACE
+                Space();
 
-            // LINE SPACE
-            Space();
+                // ENTERS THE SYSTEM
+                for (int i = 0; i < scrapePage; i++)
+                {
+                    // WRITES THE PROXY PROCESS LOG
+                    Console.WriteLine("- 64 Proxy Processed");
 
-            // SYSTEM FINISHED LOG
-            Console.WriteLine("|######################################|");
-            Console.WriteLine("|          Operation Finished          |");
-            Console.WriteLine("|######################################|");
+                    // 64 TIMES CHECK & WRITE SYSTEM FOR EVERY PAGE
+                    for (int pI = 1; pI <= 64; pI++)
+                    {
+                        try
+                        {
+                            // CHECKSUM FOR PING
+                            proxyPing = Convert.ToInt32(firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[4]/div/p")).Text.Substring(0, firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[4]/div/p")).Text.Length - 3));
+
+                            // SET PING WRITE PERMISSIONS
+                            if (proxyPing < 1000)
+                            {
+                                isPingGood = true;
+                            }
+                            else
+                            {
+                                isPingGood = false;
+                            }
+
+                            // CHECKSUM FOR TYPE
+                            proxyType = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[5]")).Text;
+
+                            // SET TYPE WRITE PERMISSIONS
+                            if (proxyType.Contains("HTTP"))
+                            {
+                                isProxyHTTP = true;
+                            }
+                            else
+                            {
+                                isProxyHTTP = false;
+                            }
+
+                            // COUNTRY SET
+                            country = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[3]/span[1]")).Text;
+
+                            // SET COUNTRY WRITE PERMISSIONS
+                            if (country != "")
+                            {
+                                isCountryValid = true;
+                            }
+                            else
+                            {
+                                isCountryValid = false;
+                            }
+
+                            // IP ADDRESS SET
+                            ipAddress = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[1]")).Text;
+
+                            // SET IP WRITE PERMISSIONS
+                            if (ipAddress != "")
+                            {
+                                isIPAddressValid = true;
+                            }
+                            else
+                            {
+                                isIPAddressValid = false;
+                            }
+
+                            // PORT ADDRESS SET
+                            portAddress = firefoxDriver.FindElement(By.XPath($"/html/body/div[1]/div[4]/div/div[4]/table/tbody/tr[{pI}]/td[2]")).Text;
+
+                            // SET PORT WRITE PERMISSIONS
+                            if (portAddress != "")
+                            {
+                                isPortValid = true;
+                            }
+                            else
+                            {
+                                isPortValid = false;
+                            }
+
+                            // ADDS THE DATA TO ARRAY
+                            if (isPingGood && isProxyHTTP && isCountryValid && isIPAddressValid && isPortValid)
+                            {
+                                proxyDataArray.Add($"{ipAddress}#{portAddress}#{country}");
+                                totalProxy++;
+                            }
+                        }
+                        catch
+                        {
+                            // CONTINUES TO THE LOOP
+                            continue;
+                        }
+                    }
+
+                    // WRITES ALL THE LINES AFTER READING & PROCESSING PROXIES
+                    if (i == scrapePage - 1)
+                    {
+                        // EXCEPTION HANDLING FOR FILE WRITING
+                        try
+                        {
+                            File.WriteAllLines(filePath, proxyDataArray);
+                            firefoxDriver.Dispose();
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            // WRITES THE ERROR LOG
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                    }
+
+                    // GOES FOR ANOTHER PAGE
+                    firefoxDriver.Navigate().GoToUrl($"https://hidemy.name/en/proxy-list/?start={pageIndex}#list");
+                    pageIndex = pageIndex + 64;
+
+                    // WAITS FOR THE NEW WEBPAGE
+                    Thread.Sleep(systemSpeed);
+                }
+
+                // LINE SPACE
+                Space();
+
+                // WRITES TOTAL GATHERED PROXY
+                Console.WriteLine($"Gathered Proxy --> {totalProxy} Out Of {pageIndex}");
+
+                // LINE SPACE
+                Space();
+
+                // SYSTEM FINISHED LOG
+                Console.WriteLine("|######################################|");
+                Console.WriteLine("|          Operation Finished          |");
+                Console.WriteLine("|######################################|");
+            }
+            else
+            {
+                // SYSTEM FINISHED LOG
+                Console.WriteLine("|######################################|");
+                Console.WriteLine("|             System Error             |");
+                Console.WriteLine("|######################################|");
+            }
 
             // WAITS AND CLOSES THE SYSTEM
             Thread.Sleep(4000);
