@@ -170,17 +170,29 @@ namespace Proxified
             string directoryPath = selectedDrive + @"\Proxified";
             string filePath = selectedDrive + @"\Proxified\Proxylist.txt";
 
-            // CREATES A DIRECTORY IF IT NOT EXISTS
-            if (!Directory.Exists(directoryPath))
+            // EXCEPTION HANDLING FOR FILE CREATION
+            try
             {
-                Directory.CreateDirectory(directoryPath);
-            }
+                // CREATES A DIRECTORY IF IT NOT EXISTS
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
 
-            // CREATES A FILE IF IT NOT EXISTS
-            if (!File.Exists(filePath))
+                // CREATES A FILE IF IT NOT EXISTS
+                if (!File.Exists(filePath))
+                {
+                    var proxyListFile = File.Create(filePath);
+                    proxyListFile.Close();
+                }
+            }
+            catch (Exception ex)
             {
-                var proxyListFile = File.Create(filePath);
-                proxyListFile.Close();
+                // WRITES THE ERROR LOG
+                Console.WriteLine(ex.Message);
+
+                // LINE SPACE
+                Space();
             }
 
             // TAKES THE SPEED FROM THE USER
@@ -302,9 +314,18 @@ namespace Proxified
                 // WRITES ALL THE LINES AFTER READING & PROCESSING PROXIES
                 if (i == scrapePage - 1)
                 {
-                    File.WriteAllLines(filePath, proxyDataArray);
-                    firefoxDriver.Dispose();
-                    break;
+                    // EXCEPTION HANDLING FOR FILE WRITING
+                    try
+                    {
+                        File.WriteAllLines(filePath, proxyDataArray);
+                        firefoxDriver.Dispose();
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        // WRITES THE ERROR LOG
+                        Console.WriteLine(ex.Message);
+                    }
                 }
 
                 // GOES FOR ANOTHER PAGE
