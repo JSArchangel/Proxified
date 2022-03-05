@@ -90,9 +90,9 @@ namespace Proxified
             FirefoxDriver firefoxDriver = new FirefoxDriver(firefoxDriverService, firefoxOptions);
 
             // INFORMATION LOG
-            Console.WriteLine("|###########################|");
-            Console.WriteLine("| Proxified Driver Executed |");
-            Console.WriteLine("|###########################|");
+            Console.WriteLine("|######################################|");
+            Console.WriteLine("|       Proxified Driver Executed      |");
+            Console.WriteLine("|######################################|");
 
             // LINE SPACE
             Space();
@@ -101,9 +101,9 @@ namespace Proxified
             firefoxDriver.Navigate().GoToUrl("https://hidemy.name/en/proxy-list/#list");
 
             // INFORMATION LOG
-            Console.WriteLine("|#############################|");
-            Console.WriteLine("| Proxified Driver Configured |");
-            Console.WriteLine("|#############################|");
+            Console.WriteLine("|######################################|");
+            Console.WriteLine("|     Proxified Driver Configured      |");
+            Console.WriteLine("|######################################|");
 
             // LINE SPACE
             Space();
@@ -112,9 +112,9 @@ namespace Proxified
             totalPage = Convert.ToInt32(firefoxDriver.FindElement(By.XPath("/html/body/div[1]/div[4]/div/div[5]/ul/li[9]/a")).Text);
 
             // INFORMATION LOG
-            Console.WriteLine("|##################################|");
-            Console.WriteLine("| Proxified Driver Service Started |");
-            Console.WriteLine("|##################################|");
+            Console.WriteLine("|######################################|");
+            Console.WriteLine("|   Proxified Driver Service Started   |");
+            Console.WriteLine("|######################################|");
 
             // LINE SPACE
             Space();
@@ -212,9 +212,9 @@ namespace Proxified
             } while (scrapePage >= totalPage);
 
             // WRITES SYSTEM START LOG
-            Console.WriteLine("|###################|");
-            Console.WriteLine("| Operation Started |");
-            Console.WriteLine("|###################|");
+            Console.WriteLine("|######################################|");
+            Console.WriteLine("|           Operation Started          |");
+            Console.WriteLine("|######################################|");
 
             // LINE SPACE
             Space();
@@ -344,9 +344,9 @@ namespace Proxified
             Space();
 
             // SYSTEM FINISHED LOG
-            Console.WriteLine("|####################|");
-            Console.WriteLine("| Operation Finished |");
-            Console.WriteLine("|####################|");
+            Console.WriteLine("|######################################|");
+            Console.WriteLine("|          Operation Finished          |");
+            Console.WriteLine("|######################################|");
 
             // WAITS AND CLOSES THE SYSTEM
             Thread.Sleep(4000);
