@@ -144,6 +144,15 @@ namespace Proxified
                 Console.Write($"Select Drive ({driveNames}) --> ");
                 selectedDrive = Console.ReadLine();
 
+                // SETS THE STRING TO UPPER
+                selectedDrive = selectedDrive.ToUpper();
+
+                // ADDS THE COLON IF IT DOESN'T CONTAINS
+                if (!selectedDrive.Contains(":"))
+                {
+                    selectedDrive += ":";
+                }
+
                 // LINE SPACE
                 Space();
 
