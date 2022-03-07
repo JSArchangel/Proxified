@@ -321,7 +321,7 @@ namespace Proxified
                             // ADDS THE DATA TO ARRAY
                             if (isPingGood && isProxyHTTP && isCountryValid && isIPAddressValid && isPortValid)
                             {
-                                proxyDataArray.Add($"{ipAddress}#{portAddress}#{country}");
+                                proxyDataArray.Add($"{ipAddress}:{portAddress}");
                                 totalProxy++;
                             }
                         }
